@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Отправка</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        h1 {
+            color: #333;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="button"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="button"]:hover {
+            background-color: #45a049;
+        }
+        #messageStatus {
+            margin-top: 10px;
+            color: #ff0000;
+        }
+        a {
+            display: block;
+            margin-top: 20px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Отправка</h1>
+        <div id="messageStatus"></div>
+        <form id="messageForm">
+            <textarea id="message" name="message" rows="4" cols="50" placeholder="Enter your message here"></textarea><br>
+            <input type="button" value="Send Message" id="sendMessage">
+        </form>
+        <a href="https://www.file.io/" target="_blank">Аплоадер</a>
+    </div>
+
+    <script>
+        document.getElementById('sendMessage').addEventListener('click', function() {
+            var message = document.getElementById('message').value;
+            var botToken = "6675675152:AAHgGbCGsV3sIYRpVXteQIN0GIowPpKwG5M";
+            var chatId = "-4287171186";
+            var url = "https://api.telegram.org/bot" + botToken + "/sendMessage";
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    document.getElementById('messageStatus').innerHTML = "Message sent successfully!";
+                    document.getElementById('messageStatus').style.color = "green";
+                } else {
+                    document.getElementById('messageStatus').innerHTML = "Failed to send message.";
+                }
+            })
+            .catch(error => {
+                document.getElementById('messageStatus').innerHTML = "Error: " + error.message;
+            });
+        });
+    </script>
+</body>
+</html>
